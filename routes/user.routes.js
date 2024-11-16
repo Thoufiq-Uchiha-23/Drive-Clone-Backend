@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { body, validationResult } = require("express-validator"); // Import body and validationResult
 const userModel = require("../models/user.model");
+const bcrypt = require('bcrypt')
 
 /* /user/test */
 
@@ -23,11 +24,13 @@ router.post(
       });
     }
     const { email, username, password } = req.body;
+    const hashPassword = await bcrypt.hash(password, 10)
 
     const newUser = await userModel.create({
       email,
       username,
-      password,
+      password: hashPassword,
+      
     });
 
     res.json(newUser);
