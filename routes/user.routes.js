@@ -13,9 +13,19 @@ router.get("/register", (req, res) => {
 router.post(
   "/register",
   [
-    body("email").trim().isEmail().withMessage("Enter a valid email").isLength({ min: 13 }),
-    body("password").trim().isLength({ min: 5 }).withMessage("Password must be at least 5 characters long"),
-    body("username").trim().isLength({ min: 3 }).withMessage("Username must be at least 3 characters long"),
+    body("email")
+      .trim()
+      .isEmail()
+      .withMessage("Enter a valid email")
+      .isLength({ min: 13 }),
+    body("password")
+      .trim()
+      .isLength({ min: 5 })
+      .withMessage("Password must be at least 5 characters long"),
+    body("username")
+      .trim()
+      .isLength({ min: 3 })
+      .withMessage("Username must be at least 3 characters long"),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -61,8 +71,14 @@ router.get("/login", (req, res) => {
 router.post(
   "/login",
   [
-    body("username").trim().isLength({ min: 3 }).withMessage("Username must be at least 3 characters long"),
-    body("password").trim().isLength({ min: 5 }).withMessage("Password must be at least 5 characters long"),
+    body("username")
+      .trim()
+      .isLength({ min: 3 })
+      .withMessage("Username must be at least 3 characters long"),
+    body("password")
+      .trim()
+      .isLength({ min: 5 })
+      .withMessage("Password must be at least 5 characters long"),
   ],
   async (req, res) => {
     const errors = validationResult(req);
@@ -85,14 +101,18 @@ router.post(
       console.log("Queried user during login:", user);
 
       if (!user) {
-        return res.status(400).json({ message: "Username or password is incorrect" });
+        return res
+          .status(400)
+          .json({ message: "Username or password is incorrect" });
       }
 
       const isMatch = await bcrypt.compare(password, user.password);
       console.log("Password match result:", isMatch);
 
       if (!isMatch) {
-        return res.status(400).json({ message: "Username or password is incorrect" });
+        return res
+          .status(400)
+          .json({ message: "Username or password is incorrect" });
       }
 
       /* Generate JWT */
@@ -107,10 +127,14 @@ router.post(
           email: user.email,
           username: user.username,
         },
-        process.env.JWT_SECRET,
+        process.env.JWT_SECRET
       );
 
       console.log("Generated JWT token:", token);
+
+      res.cookie("token", token);
+
+      res.send("Logged in");
 
       res.json({
         message: "Login successful",
