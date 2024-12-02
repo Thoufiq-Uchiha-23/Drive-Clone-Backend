@@ -8,6 +8,10 @@
       href="https://cdn.jsdelivr.net/npm/flowbite@2.5.2/dist/flowbite.min.css"
       rel="stylesheet"
     />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <main class="p-4 bg-gray-100 dark:bg-gray-800 h-screen w-screen">
@@ -65,8 +69,11 @@
           </button>
         </form>
 
-        <button onclick="hidePopUp()">
-          Close
+        <button
+          onclick="hidePopUp()"
+          class="top-4 right-4 absolute text-xl text-gray-500 hover:text-gray-400"
+        >
+          <i class="ri-close-line"></i>
         </button>
       </div>
     </main>
@@ -78,7 +85,7 @@
       }
 
       function hidePopUp() {
-        document.querySelector(".pop").style.display = "hidden";
+        document.querySelector(".pop").style.display = "none";
       }
     </script>
   </body>
